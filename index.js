@@ -4,10 +4,13 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
+app.use(express.json());
+
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 app.post("/send-email", async (req, res) => {
+  console.log(req.body);
   const { to, subject, text } = req.body;
 
   if (!to || !subject || !text) {
@@ -17,13 +20,13 @@ app.post("/send-email", async (req, res) => {
   }
 
   try {
-    const htmlText = text.replace(/\n/g, "<br>");
+    // const htmlText = text.replace(/\n/g, "<br>");
     const msg = {
       to: to,
       from: "on-demand <pranjal@schoolhack.ai>",
       subject: subject,
       text: text,
-      html: `${htmlText}`,
+      html: `${text}`,
     };
     sgMail
       .send(msg)
