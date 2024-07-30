@@ -20,7 +20,6 @@ app.post("/send-email", async (req, res) => {
   }
 
   try {
-    // const htmlText = text.replace(/\n/g, "<br>");
     const msg = {
       to: to,
       from: "on-demand <info@on-demand.io>",
