@@ -30,7 +30,10 @@ app.post("/send-email", async (req, res) => {
     sgMail
       .send(msg)
       .then(() => {
-        res.json("Email sent");
+        res.status(200).json({
+          message:
+            "Email has been sent successfully to the provided email address",
+        });
       })
       .catch((error) => {
         console.error(error);
