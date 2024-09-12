@@ -31,8 +31,7 @@ app.post("/send-email", async (req, res) => {
       .send(msg)
       .then(() => {
         res.status(200).json({
-          message:
-            "Email has been sent successfully to the provided email address",
+          message: `Email has been sent successfully to the provided ${to}`,
         });
       })
       .catch((error) => {
