@@ -18,25 +18,24 @@ app.post("/send-email", async (req, res) => {
       .status(400)
       .send({ error: "Missing required fields: to, subject, text" });
   }
-
   try {
-    const msg = {
-      to: to,
-      from: "on-demand <info@on-demand.io>",
-      subject: subject,
-      text: text,
-      html: `${text}`,
-    };
-    sgMail
-      .send(msg)
-      .then(() => {
-        res.status(200).json({
-          message: `Email has been sent successfully to the provided ${to}`,
-        });
+    const emails = to.split(",").map((email) => email.trim());
+    await Promise.all(
+      emails.map((email) => {
+        const msg = {
+          to: email,
+          from: "on-demand <info@on-demand.io>",
+          subject: subject,
+          text: text,
+          html: `${text}`,
+        };
+        sgMail.send(msg);
       })
-      .catch((error) => {
-        console.error(error);
-      });
+    );
+
+    return res.status(200).json({
+      message: `Email has been sent successfully to the provided ${to}`,
+    });
   } catch (error) {
     res.status(500).send({
       success: false,
