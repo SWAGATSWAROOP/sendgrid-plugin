@@ -21,7 +21,7 @@ app.post("/send-email", async (req, res) => {
   try {
     const emails = to.split(",").map((email) => email.trim());
     await Promise.all(
-      emails.map((email) => {
+      emails.map(async (email) => {
         const msg = {
           to: email,
           from: "on-demand <info@on-demand.io>",
@@ -29,7 +29,7 @@ app.post("/send-email", async (req, res) => {
           text: text,
           html: `${text}`,
         };
-        sgMail.send(msg);
+        await sgMail.send(msg);
       })
     );
 
